@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Unique Search for Altered.gg",
+  "version": "1.0",
+  "description": "An extension for Unique search on altered.gg using their API.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.altered.gg/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.altered.gg/*"
+      ],
+      "js": [
+        "src/api.js",
+        "src/eventHandlers.js",
+        "src/htmlInyector.js",
+        "src/content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
