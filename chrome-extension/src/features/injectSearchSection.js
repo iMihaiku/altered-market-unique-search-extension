@@ -1,4 +1,5 @@
-const injectSearchIntoForm = eventHandler => {
+function injectSearchSectionIntoMarketForm(){
+  console.log('Inyectando sección de búsqueda en el formulario del mercado...')
   const form = document.querySelector('form')
   if (form) {
     // Crear el input
@@ -19,11 +20,7 @@ const injectSearchIntoForm = eventHandler => {
       'w-1/2 rounded-lg border-[1px] border-neutral-300 px-2 py-2 lg-medium focus:outline-none focus:border-gold-300 hover:bg-mercury-200 text-neutral-800 transition-all duration-quick ease-out bg-mercury-100'
 
     // Opciones de idioma
-    const idiomas = [
-      { value: 'es-es', label: 'Español' },
-      { value: 'en-us', label: 'Inglés' },
-      { value: 'fr-fr', label: 'Francés' }
-    ]
+    const idiomas = env_config.languages
 
     idiomas.forEach(idioma => {
       const option = document.createElement('option')
@@ -37,64 +34,31 @@ const injectSearchIntoForm = eventHandler => {
     buttonElement.className =
       'w-1/2 bg-neutral-500 hover:bg-neutral-700 focus:bg-neutral-600 transition clickable text-neutral-50 sm-regular px-3 py-1.5 rounded-lg'
     buttonElement.textContent = 'Buscar'
-
-    // Agregar evento de clic al botón
-    buttonElement.addEventListener('click', event => {
-      event.preventDefault() // Evitar el comportamiento por defecto del formulario
-      eventHandler()
-    })
+    buttonElement.id = 'buscadorUnicasBtn'
 
     // Crear un contenedor para el input y el selector de habilidades
     const inputContainer = document.createElement('div')
     inputContainer.className = 'flex w-4/5 gap-2'
 
     // Crear el selector de habilidades
-    const abilitySelectElement = document.createElement('select')
-    abilitySelectElement.id = 'selectorHabilidad'
-    abilitySelectElement.className =
+    const skillSelectedElement = document.createElement('select')
+    skillSelectedElement.id = 'selectorHabilidad'
+    skillSelectedElement.className =
       'w-1/5 rounded-lg border-[1px] border-neutral-300 px-2 py-2 lg-medium focus:outline-none focus:border-gold-300 hover:bg-mercury-200 text-neutral-800 transition-all duration-quick ease-out bg-mercury-100'
 
-    const habilidadesPorIdioma = {
-      'es-es': [
-        { value: 'todo', label: 'Todo' },
-        { value: '{j}', label: 'Flecha' },
-        { value: '{h}', label: 'Mano' },
-        { value: '{r}', label: 'Reserva' },
-        { value: 'al anochecer', label: 'Al Anochecer' },
-        { value: 'al mediodia', label: 'Al Mediodía' },
-        { value: 'cuando', label: 'Cuando' }
-      ],
-      'en-us': [
-        { value: 'todo', label: 'All' },
-        { value: '{j}', label: 'Arrow' },
-        { value: '{h}', label: 'Hand' },
-        { value: '{r}', label: 'Reserve' },
-        { value: 'at dusk', label: 'At Dusk' },
-        { value: 'at noon', label: 'At Noon' },
-        { value: 'when', label: 'When' }
-      ],
-      'fr-fr': [
-        { value: 'todo', label: 'Tout' },
-        { value: '{j}', label: 'Flèche' },
-        { value: '{h}', label: 'Main' },
-        { value: '{r}', label: 'Réserve' },
-        { value: 'au crepuscule', label: 'Au Crépuscule' },
-        { value: 'a midi', label: 'À Midi' },
-        { value: 'quand', label: 'Quand' }
-      ]
-    }
+    const skillsPerLanguage = env_config.skillsPerLanguage
 
     // Actualizar las opciones iniciales según el idioma seleccionado
     const initialLanguage =
       document.querySelector('#selectorIdioma')?.value || 'es-es'
-    const habilidades =
-      habilidadesPorIdioma[initialLanguage] || habilidadesPorIdioma['es-es']
+    const skills =
+      skillsPerLanguage[initialLanguage] || skillsPerLanguage['es-es']
 
-    habilidades.forEach(habilidad => {
+    skills.forEach(skill => {
       const option = document.createElement('option')
-      option.value = habilidad.value
-      option.textContent = habilidad.label
-      abilitySelectElement.appendChild(option)
+      option.value = skill.value
+      option.textContent = skill.label
+      skillSelectedElement.appendChild(option)
     })
 
     // Escuchar cambios en el selector de idioma
@@ -107,7 +71,7 @@ const injectSearchIntoForm = eventHandler => {
     form.insertBefore(actionContainer, form.firstChild)
 
     // Insertar el selector de habilidades y el input en el contenedor
-    inputContainer.appendChild(abilitySelectElement)
+    inputContainer.appendChild(skillSelectedElement)
     inputContainer.appendChild(inputElement)
 
     // Insertar el inputContainer en el formulario
@@ -126,19 +90,19 @@ const injectSearchIntoForm = eventHandler => {
       .querySelector('#selectorIdioma')
       .addEventListener('change', event => {
         const selectedLanguage = event.target.value
-        const habilidades =
-          habilidadesPorIdioma[selectedLanguage] ||
-          habilidadesPorIdioma['es-es']
+        const skills =
+          skillsPerLanguage[selectedLanguage] ||
+          skillsPerLanguage['es-es']
 
         // Limpiar las opciones actuales
-        abilitySelectElement.innerHTML = ''
+        skillSelectedElement.innerHTML = ''
 
         // Agregar las nuevas opciones según el idioma
-        habilidades.forEach(habilidad => {
+        skills.forEach(skill => {
           const option = document.createElement('option')
-          option.value = habilidad.value
-          option.textContent = habilidad.label
-          abilitySelectElement.appendChild(option)
+          option.value = skill.value
+          option.textContent = skill.label
+          skillSelectedElement.appendChild(option)
         })
       })
   }

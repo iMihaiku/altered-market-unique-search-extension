@@ -18,10 +18,18 @@
         "https://www.altered.gg/*"
       ],
       "js": [
-        "src/api.js",
-        "src/eventHandlers.js",
-        "src/htmlInyector.js",
-        "src/content.js"
+        "src/config.js",
+        "src/events/eventHandlers.js",
+        "src/features/injectSearchSection.js",
+        "src/features/injectCardImage.js",
+        "src/utils/validateURL.js",
+        "src/utils/cardUtility.js",
+        "src/altered_api/authentication.js",
+        "src/altered_api/cardDataFetch.js",
+        "src/altered_api/cardSearch.js",
+        "src/features/injectHighlightedCard.js",
+        "src/content.js",
+        "src/events/addEvents.js"
       ],
       "run_at": "document_end"
     }

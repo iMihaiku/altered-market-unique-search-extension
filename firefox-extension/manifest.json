@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Unique Search for Altered.gg",
+  "version": "1.0.0",
+  "description": "Búsqueda avanzada de cartas únicas en Altered.gg (versión Firefox)",
+  "icons": {"128": "../icon.png"},
+  "background": {"service_worker": "src/background.js"},
+  "content_scripts": [
+    {
+      "matches": ["https://www.altered.gg/market*"],
+      "js": ["src/content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": "../icon.png"
+  },
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://www.altered.gg/*"]
+}

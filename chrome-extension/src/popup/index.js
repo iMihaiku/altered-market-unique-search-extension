@@ -11,31 +11,32 @@ document.addEventListener('DOMContentLoaded', function () {
       currentTab.url?.includes('altered.gg')
     ) {
       console.log('Market page detected:', currentTab.url)
-      // Mostrar menú de configuración
+
+      const changeLanguageKey = CHROME_STORAGE.autoChangeLanguageKey
+
       container.innerHTML = `
         <h1>Configuración</h1>
         <div id="message" class="message hidden"></div>
         <label>
-          <input type="checkbox" id="autoChangeLanguage" /> Cambiar idioma de las cartas tras la busqueda
+          <input type="checkbox" id="${changeLanguageKey}" /> Cambiar idioma de las cartas tras la busqueda
         </label>
         <button id="saveConfig" class="button">Guardar configuración</button>
       `
 
-      // Leer configuración guardada y actualizar el checkbox
-      chrome.storage.sync.get(['autoChangeLanguage'], result => {
-        document.getElementById('autoChangeLanguage').checked =
+      chrome.storage.sync.get([changeLanguageKey], result => {
+        document.getElementById(changeLanguageKey).checked =
           !!result.autoChangeLanguage
       })
-
+      console.log('Current setting for autoChangeLanguage:', data)
       // Agregar funcionalidad al botón de guardar
       const saveButton = document.getElementById('saveConfig')
       const messageDiv = document.getElementById('message')
 
       saveButton.addEventListener('click', () => {
         const autoChangeLanguage =
-          document.getElementById('autoChangeLanguage').checked
+          document.getElementById(changeLanguageKey).checked
 
-        chrome.storage.sync.set({ autoChangeLanguage }, () => {
+        chrome.storage.sync.set({ [changeLanguageKey]: autoChangeLanguage }, () => {
           // Mostrar mensaje de éxito
           messageDiv.textContent = '✓ Configuración guardada correctamente'
           messageDiv.className = 'message success'
